@@ -40,6 +40,32 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/random")
+def get_random_cafe():
+    cafes = db.session.query(Cafe).all()
+    random_cafe = random.choice(cafes)
+    return jsonify(cafe=random_cafe.to_dict())
+
+
+@app.route("/all")
+def get_all_cafes():
+    cafes = db.session.query(Cafe).all()
+    cafe_list = []
+    for c in cafes:
+        cafe_list.append(c.to_dict())
+    return jsonify(cafes=cafe_list)
+
+
+@app.route("/search")
+def get_cafe_at_location():
+    query_location = request.args.get("loc")
+    cafe = db.session.query(Cafe).filter_by(location=query_location).all()
+    if cafe:
+        return jsonify(cafes_in_chosen_location=[c.to_dict() for c in cafe])
+    else:
+        return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."})
+
+
 
 
 
