@@ -97,7 +97,15 @@ def update(id):
         return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."})
 
 
-
+@app.route("/report-closed/<int:cafe_id>", methods=["DELETE"])
+def delete_cafe(cafe_id):
+    cafe = db.session.query(Cafe).get(cafe_id)
+    db.session.delete(cafe)
+    db.session.commit()
+    if cafe:
+        api_key = request.args.get("api_key")
+        if
+        return jsonify(response={"Status": "Sucessfully Deleted"})
 
 
 if __name__ == '__main__':
